@@ -2,7 +2,7 @@ import os
 import requests
 
 
-def send_image(url_link, text_path):
+def send_text(url_link, text_path):
     info = open(text_path, "rb").read()
     payload = {"text": info}
 
@@ -11,5 +11,5 @@ def send_image(url_link, text_path):
     return response
 
 
-resp = send_image("http://localhost:4002/process", "./content/text1.txt")
+resp = send_text("http://localhost:4001/process", "./content/text1.txt")
 print(resp)
