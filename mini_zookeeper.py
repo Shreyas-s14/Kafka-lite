@@ -74,8 +74,8 @@ def metadata_update():
     pass
 
 def main():
-    global host # fix later
-    global port
+    host = "127.0.0.1" # fix later
+    port = 1025
     c1,c2,c3=enter_client()  # for now, manually enter
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
@@ -95,8 +95,5 @@ def main():
         #client_handler2.join()
         client_handler3.start()
 
-
-
-
-
+main()
 
