@@ -2,8 +2,8 @@ import socket
 import threading
 import os
 
-ser_host ='10.0.0.2'
-ser_port = 4001
+ser_host ='10.0.2.15'
+ser_port = 5000
 print(f"Running server on: {ser_host} and port: {ser_port}")
 
 sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,7 +23,7 @@ def on_new_client(client,connection):
     while True:
         msg = client.recv(1024)
         print(f"The client said:{msg.decode()}")
-        client.sendall("hi".encode('utf-8'))
+        client.send("hi".encode('utf-8'))
         #temp
         if msg.decode() == "stop":
             break
