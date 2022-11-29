@@ -2,6 +2,9 @@ import socket
 import threading
 import os
 
+
+queue = []
+
 ser_host ='10.0.2.15'
 ser_port = 5000
 print(f"Running server on: {ser_host} and port: {ser_port}")
@@ -20,16 +23,22 @@ def on_new_client(client,connection):
     ip = connection[0]
     port = connection[1]
     print(f"New connection from ip:{ip} and port:{port}")
+    queue.append(port)
+    print(queue)
     while True:
-        msg = client.recv(1024)
-        print(f"The client said:{msg.decode()}")
-        client.send("hi".encode('utf-8'))
-        #temp
-        if msg.decode() == "stop":
+        try:
+            msg = client.recv(1024)
+            print(f"The client said:{msg.decode()}")
+            client.send("hi".encode('utf-8'))
+            #temp
+            if msg.decode() == "stop":
+                break
+        except Exception as e:
             break
-
+        
+        print(queue)
         #give condition here if it doesn't for send then call allocated leader? and then close that connection and start a new connection
-
+    queue.pop(0)
     print(f"disconnected")
     
 while True:

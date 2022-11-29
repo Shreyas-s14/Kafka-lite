@@ -51,7 +51,7 @@ def handle_client(client_socket):
     #send back a packet
     client_socket.send("ACK!".encode('utf-8'))
     #client_socket.close()
-
+ 
 def enter_client(): # temporary soltion for getting ip and port from all the 3 brokers... fix later
     client1=[]
     client2=[]
@@ -74,8 +74,8 @@ def metadata_update():
     pass
 
 def main():
-    host = "127.0.0.1" # fix later
-    port = 1025
+    global host # fix later
+    global port
     c1,c2,c3=enter_client()  # for now, manually enter
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
@@ -95,5 +95,8 @@ def main():
         #client_handler2.join()
         client_handler3.start()
 
-main()
+
+
+
+
 
