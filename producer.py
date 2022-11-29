@@ -4,7 +4,7 @@ import requests
 
 def send_text(url_link, text_path):
     info = open(text_path, "rb").read()
-    payload = {"text": info}
+    payload = {"text": info,"id":123}
 
     response = requests.post(url_link, files=payload).json()
 
