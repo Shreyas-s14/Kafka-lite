@@ -8,15 +8,15 @@ number_of_brokers = 3
 
 commands = []
 
-commands.append("python broker1.py")
-commands.append("python broker2.py")
-commands.append("python broker3.py")
+commands.append("python3 broker1.py")
+commands.append("python3 broker2.py")
+commands.append("python3 broker3.py")
 
 for i in range(number_of_consumers):
-    commands.append("python consumer.py")
+    commands.append("python3 consumer.py")
 
 for i in range(number_of_producers):
-    commands.append("python producer.py")
+    commands.append("python3 producer.py")
 
 #commands.append("python mini_zookeeper.py")
 

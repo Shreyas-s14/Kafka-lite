@@ -54,5 +54,5 @@ class Zookeeper:
 if __name__=="__main__":
     #call instance of zookeeper with necessary ports
     #run broker( the socket part of it atleast to test out connections)
-    #TODO 
-    pass
+    z1 = Zookeeper("10.0.2.15",1025)
+    z1.run()

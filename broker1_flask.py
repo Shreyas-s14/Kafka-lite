@@ -17,8 +17,9 @@ def response():
             text = "Wassup bwoi!!"
 
     return jsonify({"text": text})
-
-
+# while True:
+#     print("hello world")
 if __name__ == "__main__":
+    #connect to zookeeper
     app.run(port=port,
             debug=True)
