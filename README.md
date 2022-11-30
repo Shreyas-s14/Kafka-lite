@@ -8,13 +8,16 @@ Project Title: Yet another Kafka (YaK)
 * brokers communicate with producer and consumer
 * number of consumers and producers created is now user defined.
 
-## Issues to be fixed:
-* Heartbeat method inside zookeeper now closes connection if no response is detected in 10 seconds. 
+## Issues to be fixed/Implementation to be done:
+* Zookeeper to have leader election.
+* broker to intercommunicate(?) 
+* producer and consumer as a whole :( 
 * Broker functionalities need to be implemented.
 * **THE ENTIRE PARTITIONING SECTION IS STILL LEFT !!!!**
 
 
 ## Instructions to run servers
+* first run the zookeeper. The updated version is "new_zookeeper.py".
 * Open three terminals to run "python broker_name.py" to setup three broker servers.
 * Run "python consumer.py" to run consumer.
 * Run "python producer.py" to run producer.
