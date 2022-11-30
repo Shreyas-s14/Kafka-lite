@@ -1,6 +1,7 @@
 import socket
 import threading
 import os
+import json
 
 #client part (zookeeper-broker)
 client1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -49,14 +50,30 @@ def on_new_client(client,connection):
     port = connection[1]
     print(f"new connection from ip:{ip} and port: {port}")
     while True:
-        client1.send("Give ip_port".encode('utf-8'))
-        l = client1.recv(1024).decode()
+        # client1.send("Give ip_port".encode('utf-8'))
+        # l = client1.recv(1024).decode()
 
         msg = client.recv(1024)
         print(f"The client said:{msg.decode()}")
         if msg.decode()=='p_update':
             # client.send(l.encode('utf-8'))
-
+            while True:
+                msg = client.recv(1024).decode()
+                msg = json.loads(msg)
+                topic = list(msg.keys())[0]
+                print(topic)
+                dirnames = [name for name in os.listdir("./broker1")]
+                if topic not in dirnames:
+                    os.chdir('./broker1')
+                    os.mkdir(topic)
+                    f = open(f'./broker1/{topic}/partition1.txt','w')
+                    f.close()
+                    f = open(f'./broker1/{topic}/partition2.txt','w')
+                    f.close()
+                    f = open(f'./broker1/{topic}/partition3.txt','w')
+                    f.close()
+                    with  open(f'./broker1/{topic}/partition1.txt','a+') as f:
+                        f.write(f"")
         client.send("hi".encode("utf-8"))
         if msg.decode() == "stop":
             break
