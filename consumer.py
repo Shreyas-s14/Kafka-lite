@@ -1,14 +1,10 @@
-import os
-import requests
+from consumer_lib import *
+c = consumer()
 
+#Arg parse sets flag,if flag present 'True' else 'False'
+flag = False
 
-def send_text(url_link, text_path):
-    info = open(text_path, "rb").read()
-    payload = {"text": info}
-    response = requests.post(url_link, files=payload).json()
+topic = str(input("Enter Topic Name to subscribe to or enter xzzx to get out"))
+client,offset = c.connection(topic)
 
-    return response
-
-
-resp = send_text("http://localhost:5000/process", "./content/text1.txt")
-print(resp)
+print(c.request_topic(client,topic,offset,flag))
