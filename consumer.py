@@ -10,5 +10,5 @@ def send_text(url_link, text_path):
     return response
 
 
-resp = send_text("http://localhost:4001/process", "./content/text1.txt")
+resp = send_text("http://localhost:5000/process", "./content/text1.txt")
 print(resp)
