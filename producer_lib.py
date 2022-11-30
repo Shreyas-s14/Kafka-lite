@@ -69,8 +69,9 @@ class producer:
         self.message = message
         final_message = {topic:message}
         j_message = json.dumps(final_message)
+        print(j_message)
         client.send(j_message.encode('utf-8'))
-        ack_mesg = client.recv(1024).decode('utf-8')
+        # ack_mesg = client.recv(1024).decode('utf-8')
 
 
 if __name__ == '__main__':
