@@ -9,7 +9,7 @@ print(dirnames)
 if topic_name not in dirnames:
         os.chdir('./topics')
         os.mkdir(topic_name)
-        os.chdir('')
+
         path = './topic/{topicName}/{fileName}'.format(topicName = topic_name,fileName = topic_name+'.txt')
         with open(path,'w') as f:
             f.write(data)

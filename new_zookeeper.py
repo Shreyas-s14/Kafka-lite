@@ -37,9 +37,9 @@ def on_new_client(client,connection):
         except Exception as e:
             break
         
-        print(queue)
         #give condition here if it doesn't for send then call allocated leader? and then close that connection and start a new connection
     queue.pop(0); leader=queue[0] # leader gets updated here. Basically round robin election??
+    print(queue)
     print(f"disconnected")
     
 while True:
