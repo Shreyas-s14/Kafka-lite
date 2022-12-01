@@ -50,15 +50,17 @@ class consumer:
             connect_ip =  ip_port[(ind+2)%3][0]
         else:
             print("none is working")
+        print(meta)
         return client,meta
 
     def request_topic(self,client,topic,offset,flag):
         self.topic = topic
         self.offset = offset
         self.flag = flag
-        final_request = {topic:(flag,offset)}
+        final_request = {topic:flag}
         request_message = json.dumps(final_request)
         client.send(request_message.encode('utf-8'))
+        client.send(json.dumps(offset).encode('utf-8'))
         while True:
             data = client.recv(2048).decode('utf-8')
             yield data

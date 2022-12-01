@@ -12,9 +12,9 @@ if args.from_beginning:
 else:
     flag=False
 
-
+print(flag)
 
 topic = str(input("Enter Topic Name to subscribe to or enter xzzx to get out"))
 client,offset = c.connection(topic)
-
+print(offset)
 print(c.request_topic(client,topic,offset,flag))

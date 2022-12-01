@@ -5,7 +5,6 @@ import os
 
 queue = []
 leader=0
-
 ser_host ='10.0.2.15'
 ser_port = 5000
 print(f"Running server on: {ser_host} and port: {ser_port}")
