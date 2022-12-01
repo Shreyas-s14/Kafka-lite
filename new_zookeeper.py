@@ -1,11 +1,10 @@
 import socket
 import threading
 import os
-import logging
+
 
 queue = []
 leader=0
-
 ser_host ='10.0.2.15'
 ser_port = 5000
 print(f"Running server on: {ser_host} and port: {ser_port}")
@@ -33,8 +32,6 @@ def on_new_client(client,connection):
             print(f"The client said:{msg.decode()}")
             client.send("hi".encode('utf-8'))
             #temp
-            if port==leader:
-               client.send("True".encode('utf-8'))
             if msg.decode() == "stop":
                 break
         except Exception as e:
@@ -43,7 +40,6 @@ def on_new_client(client,connection):
         #give condition here if it doesn't for send then call allocated leader? and then close that connection and start a new connection
     queue.pop(0); leader=queue[0] # leader gets updated here. Basically round robin election??
     print(queue)
-    client.send("True".encode('utf-8'))
     print(f"disconnected")
     
 while True:

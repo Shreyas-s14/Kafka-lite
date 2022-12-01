@@ -30,6 +30,7 @@ class consumer:
         ind = random.randint(0,2)
         if helper_connect(client,ind):
             client.send("c_offset".encode('utf-8'))
+            client.recv(1024).decode()
             client.send(f"{topic}".encode('utf-8'))
             meta = client.recv(2048).decode('utf-8')
             connect_port = ip_port[ind][1]
@@ -37,6 +38,7 @@ class consumer:
 
         elif helper_connect(client,((ind+1)%3)):
             client.send("c_offset".encode('utf-8'))
+            client.recv(1024).decode()
             client.send(f"{topic}".encode('utf-8'))
             meta = client.recv(2048).decode('utf-8')
             connect_port = ip_port[(ind+1)%3][1]
@@ -44,6 +46,7 @@ class consumer:
 
         elif helper_connect(client,((ind+2)%3)):
             client.send("c_offset".encode('utf-8')) 
+            client.recv(1024).decode()
             client.send(f"{topic}".encode('utf-8'))
             meta = client.recv(2048).decode('utf-8')
             connect_port = ip_port[(ind+2)%3][1]
@@ -54,6 +57,7 @@ class consumer:
         return client,meta
 
     def request_topic(self,client,topic,offset,flag):
+        l=[]
         self.topic = topic
         self.offset = offset
         self.flag = flag
@@ -61,9 +65,14 @@ class consumer:
         request_message = json.dumps(final_request)
         client.send(request_message.encode('utf-8'))
         client.send(json.dumps(offset).encode('utf-8'))
-        while True:
+        i=0
+        while i<3:
             data = client.recv(2048).decode('utf-8')
-            yield data
-
+            l.append(data)
+            # print(data)
+            if data=='stop':
+                break
+            i+=1
+        return l
 if __name__ == '__main__':
     pass

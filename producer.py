@@ -21,11 +21,11 @@ client = p.connection()
 
 
 while True:
-    topic = str(input("Enter Topic Name or xzzx to get out"))
+    topic = str(input("Enter Topic Name or xzzx to get out: "))
     if topic == 'xzzx':
         break
     while True:
-        mesg = str(input("Enter your message or enter exit to get out"))
+        mesg = str(input("Enter your message or enter exit to get out: "))
         if mesg == 'exit':
             break
         else:

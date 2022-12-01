@@ -14,7 +14,9 @@ else:
 
 print(flag)
 
-topic = str(input("Enter Topic Name to subscribe to or enter xzzx to get out"))
+topic = str(input("Enter Topic Name to subscribe to or enter xzzx to get out: "))
 client,offset = c.connection(topic)
 print(offset)
-print(c.request_topic(client,topic,offset,flag))
+l =c.request_topic(client,topic,offset,flag)
+for i in l:
+    print(i)
