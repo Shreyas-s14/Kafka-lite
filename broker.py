@@ -1,12 +1,27 @@
 import socket
 import threading
 import os
-import json
+import json,logging
+
+
+#log file implementation:
+file_path='' # GIVE PATH HERE !!
 
 #client part (zookeeper-broker)
 client1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 client1.connect(('10.0.2.15',5000))
+
+
+leader_or_not=client1.recv(1024).decode()
+
+def leader_func():
+    if(leader_or_not):
+        logging.basicConfig(filename=file_path,level=logging.DEBUG)
+        logging.info(f"leader: {leader_or_not}")
+        
+    else :
+        return
 
 # server part
 ser_host='10.0.2.15'
@@ -31,7 +46,6 @@ def on_new_client(client,connection):
         # l = client1.recv(1024).decode()
 
         msg = client.recv(1024)
-        here = msg.decode()
         print(f"The client said:{msg.decode()}")
         if msg.decode()=='p_update':
             # client.send(l.encode('utf-8'))
@@ -91,77 +105,6 @@ def on_new_client(client,connection):
                 with open("./zookeeper/offset_metadata.txt", 'w') as json_file:
                     json_file.write(json.dumps(meta,indent=4))
 
-        if here=='c_offset':
-            msg = client.recv(1024).decode('utf-8')
-            # msg = json.load(msg)
-            topic = msg
-            print(topic)
-            dirnames = [name for name in os.listdir("./broker1")]
-            with open("./zookeeper/offset_metadata.txt","r") as f1:
-                    meta = json.loads(f1.read())
-            if topic not in dirnames:
-                os.chdir('./broker1')
-                os.mkdir(topic)
-                with  open('./topic/{topicName}/partition1.txt'.format(topicName = topic),'w+') as f:
-                    f.write("--")
-                
-                with open('./topic/{topicName}/partition2.txt'.format(topicName = topic),'w+') as f:
-                    f.write("--")
-                
-                with open('./topic/{topicName}/partition3.txt'.format(topicName = topic),'w+') as f:
-                    f.write("--")
-                off1 = 0;off2=0;off3=0
-            else:
-                off1 = meta[topic]["off1"];off2 = meta[topic]["off2"];off3 = meta[topic]["off3"]
-            client.send(meta[topic].encode('utf-8'))
-            d=client.recv(1024).decode('utf-8')
-            offset=client.recv(1024).decode('utf-8')
-            d=json.loads(d)
-            offset = json.loads(offset)
-            topic=list(d.keys())[0]
-            flag = d[topic][0]
-            if flag==True:
-                with  open('./topic/{topicName}/partition1.txt'.format(topicName = topic),'r') as f:
-                    v = f.readlines()
-                    h = [i[2:] for i in v]
-                    print(v)
-                    client.send(h.encode('utf-8'))                
-                with open('./topic/{topicName}/partition2.txt'.format(topicName = topic),'r') as f:
-                    v = f.readlines()
-                    h = [i[2:] for i in v]
-                    print(v)
-                    client.send(h.encode('utf-8'))  
-                with open('./topic/{topicName}/partition3.txt'.format(topicName = topic),'r') as f:
-                    v = f.readlines()
-                    h = [i[2:] for i in v]
-                    print(v)
-                    client.send(h.encode('utf-8')) 
-            else:
-                with open("./zookeeper/offset_metadata.txt","r") as f1:
-                    meta = json.loads(f1.read())
-                if meta[topic]["off1"]-offset["off1"]:
-                    with  open('./topic/{topicName}/partition1.txt'.format(topicName = topic),'r') as f:
-                        v = f.readlines()
-                        h = [i[2:] for i in v]
-                        print(v)
-                        client.send(h[offset["off1"]].encode('utf-8'))
-                        offset["off1"] = meta[topic]["off1"]
-                elif meta[topic]["off2"]-offset["off2"]:
-                    with  open('./topic/{topicName}/partition2.txt'.format(topicName = topic),'r') as f:
-                        v = f.readlines()
-                        h = [i[2:] for i in v]
-                        print(v)
-                        client.send(h[offset["off2"]].encode('utf-8'))
-                        offset["off2"] = meta[topic]["off2"]
-                elif meta[topic]["off3"]-offset["off3"]:
-                    with  open('./topic/{topicName}/partition3.txt'.format(topicName = topic),'r') as f:
-                        v = f.readlines()
-                        h = [i[2:] for i in v]
-                        print(v)
-                        client.send(h[offset["off3"]].encode('utf-8'))
-                        offset["off3"] = meta[topic]["off3"]
-        
-        
         client.send("hi".encode("utf-8"))
         if msg.decode() == "stop":
             break
